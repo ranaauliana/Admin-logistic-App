@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+// use Session;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -51,6 +53,10 @@ class AuthController extends Controller
 
             $userPassword = $user['password'];
             if (Hash::check($password, $userPassword)) {
+
+                //store session
+                session(['loginId' => $user->id, 'nama' => $user->nama, 'level'=> $user->level]);
+
                 return redirect()->route('dashboard');
             }else{
                 return response()->view('auth/login', [
@@ -64,5 +70,11 @@ class AuthController extends Controller
             "error" => "Email tidak terdaftar!"
         ]);
     }
+    }
+    public function logout(Request $request){
+        if(Session::has('loginId')){
+            Session::pull('loginId');
+            return redirect('/login');
+        }
     }
 }

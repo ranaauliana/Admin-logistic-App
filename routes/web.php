@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,26 +17,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(AuthController::class)->group(function(){
-    Route::get('register', 'register')->name('register');
+    Route::get('register', 'register')->name('register')->middleware('loggedIn');
     Route::post('register', 'registerSimpan')->name('register.simpan');
 
-    Route::get('login', 'login')->name('login');
+    Route::get('/login', 'login')->name('login')->middleware('loggedIn');
     Route::post('login', 'loginAksi')->name('login.aksi');
+    Route::get('logout', 'logout')->name('logout');
+    
 });
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('dashboard', function() {
-    return view('dashboard', [ "title" => "Dashboard"]);
-})->name('dashboard');
 
-Route::middleware(['auth'])->group(function(){
-    Route::get('', [BarangController::class, 'index'])->name('barang');
-    Route::get('tambah',[BarangController::class, 'tambah'])->name('barang.tambah');
-    Route::post('tambah',[BarangController::class, 'simpan'])->name('barang.tambah.simpan');
-    Route::get('edit/{id}', [BarangController::class, 'edit'])->name('barang.edit');
-    Route::post('edit/{id}',[BarangController::class,'update'])->name('barang.edit.update');
-    Route::get('hapus/{id}',[BarangController::class, 'hapus'])->name('barang.hapus');
+Route::get('dashboard', [BarangController::class, 'dashboard'])->name('dashboard')->middleware(['isLoggedIn', 'isAdmin']);
+
+
+
+Route::get('', [BarangController::class, 'index'])->name('barang')->middleware('isLoggedIn');
+Route::get('tambah',[BarangController::class, 'tambah'])->name('barang.tambah')->middleware('isLoggedIn');;
+Route::post('tambah',[BarangController::class, 'simpan'])->name('barang.tambah.simpan')->middleware('isLoggedIn');;
+Route::get('edit/{id}', [BarangController::class, 'edit'])->name('barang.edit')->middleware('isLoggedIn');;
+Route::post('edit/{id}',[BarangController::class,'update'])->name('barang.edit.update')->middleware('isLoggedIn');;
+Route::get('hapus/{id}',[BarangController::class, 'hapus'])->name('barang.hapus')->middleware('isLoggedIn');;
+
+//login google
+Route::controller(GoogleController::class)->group(function(){
+    Route::get('auth/google', 'redirectGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'googleCallback');
 });

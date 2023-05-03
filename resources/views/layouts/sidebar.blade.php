@@ -12,11 +12,13 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
+    @if ($user['level'] == 'Admin')
     <li class="nav-item">
         <a class="nav-link" href="{{ route('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
-    </li>
+    </li>  
+    @endif
     <li class="nav-item">
         <a class="nav-link" href="{{ route('barang') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>

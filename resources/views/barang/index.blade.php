@@ -5,6 +5,22 @@
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">{{ $title }}</h6>
     </div>
+<br>
+    <form method="GET" action="{{ route('barang') }}"
+class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+<div class="input-group">
+    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+        aria-label="Search" aria-describedby="basic-addon2" name="key" 
+        value="{{ $key }}"
+        >
+    <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+        </button>
+    </div>
+</div>
+</form>
+
     <div class="card-body">
         <a href="{{ route('barang.tambah') }}" class="btn btn-primary mb-3">Tambah +</a>
         <div class="table-responsive">
@@ -41,6 +57,7 @@
 @endforeach
                 </tbody>
             </table>
+            {{ $barang->links() }}
         </div>
     </div>
 </div>

@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-unit-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get Lates Code
+      uses: action/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.1
+
+    - name: Install composer dependencies
+      run: | 
+        composer install --no-scripts
+    - name: Run Test
+      run: |
+        ./vendor/bin/phpunit

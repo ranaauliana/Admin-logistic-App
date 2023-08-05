@@ -23,4 +23,4 @@ jobs:
         composer install --no-scripts
     - name: Run Test
       run: |
-        vendor/bin/phpunit
+        php artisan test

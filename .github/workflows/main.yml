@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Get Lates Code
-      uses: action/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2

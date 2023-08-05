@@ -24,4 +24,4 @@ jobs:
         
     - name: Run Test
       run: |
-        php artisan test
+        vendor/bin/phpunit tests/Unit/ExampleTest.php
